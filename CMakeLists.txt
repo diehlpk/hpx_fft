@@ -4,7 +4,7 @@ project(hpx_fft CXX)
 ###########################################################
 # HPX
 find_package(HPX REQUIRED)
-find_package(FFTW3 REQUIRED)
+find_package(FFTW3l REQUIRED)
 
 add_executable(fft_hpx_task_agas src/fft_hpx_task_agas.cpp)
 target_link_libraries(fft_hpx_task_agas
@@ -51,7 +51,7 @@ target_link_libraries(fft_hpx_loop_shared
 ###########################################################
 # FFTW
 find_package(PkgConfig REQUIRED)
-pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+pkg_search_module(FFTW REQUIRED fftw3l IMPORTED_TARGET)
 find_package(OpenMP REQUIRED)
 
 # search for MPI+Threads
