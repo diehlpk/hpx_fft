@@ -4,54 +4,62 @@ project(hpx_fft CXX)
 ###########################################################
 # HPX
 find_package(HPX REQUIRED)
-find_package(FFTW3l REQUIRED)
+#find_package(FFTW3 REQUIRED)
+
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
+
+message("PATH="${FFTW_LINK_LIBRARIES})
+
+include_directories(${FFTW_INCLUDE_DIRS})
 
 add_executable(fft_hpx_task_agas src/fft_hpx_task_agas.cpp)
 target_link_libraries(fft_hpx_task_agas
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_loop src/fft_hpx_loop.cpp)
 target_link_libraries(fft_hpx_loop
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_task_agas_shared src/fft_hpx_task_agas_shared.cpp)
 target_link_libraries(fft_hpx_task_agas_shared
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_task_sync_shared src/fft_hpx_task_sync_shared.cpp)
 target_link_libraries(fft_hpx_task_sync_shared
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_task_naive_shared src/fft_hpx_task_naive_shared.cpp)
 target_link_libraries(fft_hpx_task_naive_shared
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_task_shared src/fft_hpx_task_shared.cpp)
 target_link_libraries(fft_hpx_task_shared
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 add_executable(fft_hpx_loop_shared src/fft_hpx_loop_shared.cpp)
 target_link_libraries(fft_hpx_loop_shared
                         HPX::hpx
                         HPX::iostreams_component
-                        FFTW3::fftw3)
+			${FFTW_LINK_LIBRARIES})
 
 ###########################################################
 # FFTW
 find_package(PkgConfig REQUIRED)
-pkg_search_module(FFTW REQUIRED fftw3l IMPORTED_TARGET)
+pkg_search_module(FFTW REQUIRED fftw3 IMPORTED_TARGET)
 find_package(OpenMP REQUIRED)
 
 # search for MPI+Threads
@@ -75,20 +83,20 @@ find_library(
 find_library(
     FFTW_OMP_LIB
     NAMES "fftw3_omp"
-    PATHS $ENV{FFTW_OMP_DIR}
+   PATHS $ENV{FFTW_OMP_DIR}
 )
 
 # search for HPX (MPI wip.)
-find_library(
-    FFTW_HPX_MPI_LIB
-    NAMES "fftw3_mpi"
-    PATHS $ENV{FFTW_HPX_DIR}
-)
-find_library(
-    FFTW_HPX_LIB
-    NAMES "fftw3_hpx"
-    PATHS $ENV{FFTW_HPX_DIR}
-)
+#find_library(
+#    FFTW_HPX_MPI_LIB
+#    NAMES "fftw3_mpi"
+#    PATHS $ENV{FFTW_HPX_DIR}
+#)
+#find_library(
+#    FFTW_HPX_LIB
+#    NAMES "fftw3_hpx"
+#    PATHS $ENV{FFTW_HPX_DIR}
+#)
 
 # 
 add_executable(fftw_mpi_threads src/fftw_mpi_threads.cpp)
@@ -104,19 +112,19 @@ target_link_libraries(fftw_mpi_omp
                         ${FFTW_OMP_LIB}
                         OpenMP::OpenMP_CXX)
 
-add_executable(fftw_hpx src/fftw_hpx.cpp)
-target_link_libraries(fftw_hpx
-                        PkgConfig::FFTW
-                        ${FFTW_HPX_LIB}
-                        HPX::hpx)
+		#add_executable(fftw_hpx src/fftw_hpx.cpp)
+		#target_link_libraries(fftw_hpx
+		#                        PkgConfig::FFTW
+		#        ${FFTW_HPX_LIB}
+		#        HPX::hpx)
 
-add_executable(fftw_mpi_hpx src/fftw_mpi_hpx.cpp)
-target_link_libraries(fftw_mpi_hpx
-                        PkgConfig::FFTW
-                        ${FFTW_HPX_MPI_LIB}
-                        ${FFTW_HPX_LIB}
-                        HPX::hpx
-                        HPX::wrap_main)
+		#add_executable(fftw_mpi_hpx src/fftw_mpi_hpx.cpp)
+		#target_link_libraries(fftw_mpi_hpx
+		#        PkgConfig::FFTW
+		#        ${FFTW_HPX_MPI_LIB}
+		#        ${FFTW_HPX_LIB}
+		#        HPX::hpx
+		#        HPX::wrap_main)
 
 ###########################################################
 # SEQUENTIAL
@@ -125,7 +133,7 @@ target_link_libraries(fftw_mpi_hpx
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 #                        # PkgConfig::FFTW)
                         
 ###########################################################
@@ -145,47 +153,47 @@ target_link_libraries(fftw_mpi_hpx
 # target_link_libraries(fft_hpx
 #                         HPX::hpx
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 # add_executable(fft_shared src/fft_shared.cpp)
 # target_link_libraries(fft_shared
 #                         HPX::hpx 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(scatter src/scatter.cpp)
 # target_link_libraries(scatter
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(fftw_3d src/fftw_3d.cpp)
 # target_link_libraries(fftw_3d 
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(par_2d src/par_2d.cpp)
 # target_link_libraries(par_2d 
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(par_3d src/par_3d.cpp)
 # target_link_libraries(par_3d 
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(all_to_all src/all_to_all.cpp)
 # target_link_libraries(all_to_all
 #                         HPX::hpx 
 #                         HPX::wrap_main 
 #                         HPX::iostreams_component
-#                         FFTW3::fftw3)
+#                         ${FFTW_LIBRARIES})
 
 # add_executable(sender_receiver src/sender_receiver.cpp)
 # target_link_libraries(sender_receiver 

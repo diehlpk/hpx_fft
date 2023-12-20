@@ -39,6 +39,7 @@ then
     spack load fujitsu-mpi@head%gcc@12.2.0
     export CMAKE_COMMAND=cmake
     export FFTW_DIR=/vol0004/ra010008/data/u10393/chris/fftw3/install/lib/
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/vol0004/ra010008/data/u10393/chris/fftw3/install/lib/pkgconfig/
 else
   echo 'Please specify system to compile: "epyc2" or "buran" or "fugaku"'
   exit 1
@@ -52,8 +53,8 @@ then
 fi
 
 # fftw libs
-export FFTW_TH_DIR="$ROOT/fft_installations/fftw_threads_mpi/install/lib"
-export FFTW_OMP_DIR="$ROOT/fft_installations/fftw_omp_mpi/install/lib"
+export FFTW_TH_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_pthreads/install/lib"
+export FFTW_OMP_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_openmp/install/lib"
 export FFTW_HPX_DIR="$ROOT/fft_installations/fftw_hpx_mpi/install/lib"
 export PKG_CONFIG_PATH="$FFTW_OMP_DIR/pkgconfig":$PKG_CONFIG_PATH
 
@@ -61,5 +62,5 @@ export PKG_CONFIG_PATH="$FFTW_OMP_DIR/pkgconfig":$PKG_CONFIG_PATH
 # Compile code
 ################################################################################
 rm -rf build && mkdir build && cd build
-$CMAKE_COMMAND .. -DCMAKE_BUILD_TYPE=Release -DHPX_DIR="${HPX_DIR}/cmake/HPX" -DFFTW3l_DIR="${FFTW_DIR}/cmake/fftw3"
+$CMAKE_COMMAND .. -DCMAKE_BUILD_TYPE=Release -DHPX_DIR="${HPX_DIR}/cmake/HPX" -DFFTW3_DIR="${FFTW_DIR}/cmake/fftw3"
 make -j $(grep -c ^processor /proc/cpuinfo)
