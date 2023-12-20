@@ -55,7 +55,7 @@ fi
 # fftw libs
 export FFTW_TH_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_pthreads/install/lib"
 export FFTW_OMP_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_openmp/install/lib"
-export FFTW_HPX_DIR="$ROOT/fft_installations/fftw_hpx_mpi/install/lib"
+export FFTW_HPX_DIR="/vol0004/ra010008/data/u10393/chris/fftw3/install/lib"
 export PKG_CONFIG_PATH="$FFTW_OMP_DIR/pkgconfig":$PKG_CONFIG_PATH
 
 ################################################################################

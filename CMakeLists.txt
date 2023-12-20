@@ -83,7 +83,7 @@ find_library(
 find_library(
     FFTW_OMP_LIB
     NAMES "fftw3_omp"
-   PATHS $ENV{FFTW_OMP_DIR}
+    PATHS $ENV{FFTW_OMP_DIR}
 )
 
 # search for HPX (MPI wip.)
@@ -92,11 +92,11 @@ find_library(
 #    NAMES "fftw3_mpi"
 #    PATHS $ENV{FFTW_HPX_DIR}
 #)
-#find_library(
-#    FFTW_HPX_LIB
-#    NAMES "fftw3_hpx"
-#    PATHS $ENV{FFTW_HPX_DIR}
-#)
+find_library(
+    FFTW_HPX_LIB
+    NAMES "fftw3_hpx"
+    PATHS $ENV{FFTW_HPX_DIR}
+)
 
 # 
 add_executable(fftw_mpi_threads src/fftw_mpi_threads.cpp)
@@ -112,11 +112,11 @@ target_link_libraries(fftw_mpi_omp
                         ${FFTW_OMP_LIB}
                         OpenMP::OpenMP_CXX)
 
-		#add_executable(fftw_hpx src/fftw_hpx.cpp)
-		#target_link_libraries(fftw_hpx
-		#                        PkgConfig::FFTW
-		#        ${FFTW_HPX_LIB}
-		#        HPX::hpx)
+add_executable(fftw_hpx src/fftw_hpx.cpp)
+target_link_libraries(fftw_hpx
+		        PkgConfig::FFTW
+		        ${FFTW_HPX_LIB}
+		        HPX::hpx)
 
 		#add_executable(fftw_mpi_hpx src/fftw_mpi_hpx.cpp)
 		#target_link_libraries(fftw_mpi_hpx
