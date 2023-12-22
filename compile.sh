@@ -42,16 +42,31 @@ then
     module load gcc/11.2.1
     # for fftw mpi
     module load openmpi
+elif [[ "$1" == "fugaku" ]]
+then
+    . /vol0004/ra010008/data/u10393/spackfugaku/share/spack/setup-env.sh
+    spack load /sxcx7km
+    spack load /2e66nv3
+    spack load fujitsu-mpi@head%gcc@12.2.0
+    export CMAKE_COMMAND=cmake
+    export FFTW_DIR=/vol0004/ra010008/data/u10393/chris/fftw3/install/lib/
+    export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/vol0004/ra010008/data/u10393/chris/fftw3/install/lib/pkgconfig/
 else
-  echo 'Please specify system to compile: "epyc2" or "buran"'
+  echo 'Please specify system to compile: "epyc2" or "buran" or "fugaku"'
   exit 1
 fi
 # for fftw mpi
 export CXX=${HPXSC_ROOT}/build/openmpi/bin/mpic++ 
+
+if [[ "$1" == "fugaku" ]]
+then
+   export CXX=mpic++
+fi
+
 # fftw libs
-export FFTW_TH_DIR="$ROOT/fft_installations/fftw_threads_mpi/install/lib"
-export FFTW_OMP_DIR="$ROOT/fft_installations/fftw_omp_mpi/install/lib"
-export FFTW_HPX_DIR="$ROOT/fft_installations/fftw_hpx/install/lib"
+export FFTW_TH_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_pthreads/install/lib"
+export FFTW_OMP_DIR="/vol0004/ra010008/data/u10393/chris/fftw3_mpi_openmp/install/lib"
+export FFTW_HPX_DIR="/vol0004/ra010008/data/u10393/chris/fftw3/install/lib"
 export PKG_CONFIG_PATH="$FFTW_OMP_DIR/pkgconfig":$PKG_CONFIG_PATH
 
 ################################################################################
